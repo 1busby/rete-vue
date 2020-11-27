@@ -16,6 +16,7 @@ import ConnectionMasteryPlugin from 'rete-connection-mastery-plugin';
 
 import AddComponent from './AddComponent';
 import NumComponent from './NumComponent';
+import DatasetComponent from './DatasetComponent';
 
 
 export default {
@@ -36,9 +37,7 @@ export default {
   },
   async mounted() {
     var container = document.querySelector('#rete');
-    var components = [new NumComponent(), new AddComponent()];
-    // eslint-disable-next-line no-debugger
-    // debugger;
+    var components = [new NumComponent(), new AddComponent(), new DatasetComponent('Daily Summary')];
     var editor = new Rete.NodeEditor('demo@0.1.0', container);
     editor.use(ConnectionPlugin);
     editor.use(VueRenderPlugin);
@@ -58,14 +57,17 @@ export default {
     var n1 = await components[0].createNode({ num: 2 });
     var n2 = await components[0].createNode({ num: 0 });
     var add = await components[1].createNode();
+    var dataset = await components[2].createNode();
 
     n1.position = [80, 200];
     n2.position = [80, 400];
     add.position = [500, 240];
+    dataset.position = [80, 600]
 
     editor.addNode(n1);
     editor.addNode(n2);
     editor.addNode(add);
+    editor.addNode(dataset);
 
     editor.connect(n1.outputs.get('num'), add.inputs.get('num'));
     editor.connect(n2.outputs.get('num'), add.inputs.get('num2'));
